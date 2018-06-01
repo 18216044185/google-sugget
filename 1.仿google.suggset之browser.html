@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="/js/jquery-1.11.3.min.js"></script>
+</head>
+<body>
+	<input type="text" id="keyInput">
+	<button>搜索一下</button>
+	<ul id="list">
+	</ul>
+	<script>
+		$("#keyInput").on('keyup',function(){
+			let keyword = $(this).val().trim();
+			if (!keyword) {
+				$("#list").empty();
+				return;
+			}
+			$.ajax({
+				url : '/search',
+				type : 'get',
+				data : {keyword},
+				dataType : 'json',
+				success : function(res) {
+					console.log(res);
+					let str = "";
+					res.forEach(item => {
+						str += `<li>${item.keyword}</li>`
+					});
+					$("#list").html(str);
+				},
+				error : function(err) {
+					console.log(err)
+				}
+			});
+		});
+	</script>
+</body>
+</html>
